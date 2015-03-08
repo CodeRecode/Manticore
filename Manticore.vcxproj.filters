@@ -19,6 +19,12 @@
     <ClCompile Include="Source\LuaManager.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Model.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -56,6 +62,12 @@
     </ClInclude>
     <ClInclude Include="Source\LuaManager.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Model.h">
       <Filter>Graphics</Filter>

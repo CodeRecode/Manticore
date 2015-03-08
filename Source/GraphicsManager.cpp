@@ -2,14 +2,15 @@
 #include "GraphicsManager.h"
 #include "GameObject.h"
 #include "Core.h"
+#include "Mesh.h"
 
 void LoadObj(std::string file) { 
 
 }
 
-GraphicsManager::GraphicsManager(Core *core) : IManager(core) { 
+GraphicsManager::GraphicsManager(Core *core) : IManager(core), sp("basic") { 
     // Glew / DevIL
-    glewExperimental = GL_TRUE;
+    //glewExperimental = GL_TRUE;
     glewInit();
     ilInit();
 
@@ -19,35 +20,28 @@ GraphicsManager::GraphicsManager(Core *core) : IManager(core) {
     glEnable(GL_ALPHA_TEST);
     glEnable(GL_BLEND);
     glAlphaFunc(GL_GREATER, 0.5);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	sp.Initialize();
+	m = new Model(new Texture("./Models/cube.tga"), new Mesh());
 }
 
 void GraphicsManager::Update(double frameTime) { 
     int windowWidth, windowHeight;
     glfwGetWindowSize(core->window, &windowWidth, &windowHeight);
-
-
-    GLfloat color[4]= {0.2f, 0.4f, 0.8f, 1.0f};
-
-    glFogi(GL_FOG_MODE, GL_LINEAR);        // Fog Mode
-    glFogfv(GL_FOG_COLOR, color);            // Set Fog Color
-    //glFogf(GL_FOG_DENSITY, 0.15f);              // How Dense Will The Fog Be
-    glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
-    glFogf(GL_FOG_START, 25);             // Fog Start Depth
-    glFogf(GL_FOG_END, 50);               // Fog End Depth
-    glEnable(GL_FOG);                   // Enables GL_FOG
-
+	
     // Clear the screen to background color
-    glClearColor(color[0], color[1], color[2], color[3]);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, windowWidth, windowHeight);
 
-    glMatrixMode(GL_PROJECTION);
+    /*glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45, windowWidth / windowHeight, 0.1, 50); 
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0, 0, -core->gameObjects[0]->transform.translation.z - 5);
+    glTranslatef(0, 0, core->gameObjects[0]->transform.translation.z - 5);
 
     GameObject *obj;
     for (int i = 0; i < core->MAX_GAME_OBJECTS; i++) {
@@ -66,7 +60,36 @@ void GraphicsManager::Update(double frameTime) {
             obj->texture->Draw();
             glPopMatrix();
         }
-    }
+    }*/
+
+
+	float sx, sy;
+	sy = 0.6f* .1f;
+	sx = sy * windowWidth / windowHeight;
+
+	glm::mat4x4 T1 = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, 0.f));
+	glm::mat4x4 T2 = glm::rotate(T1, -60.f, glm::vec3(1, 0, 0));
+	glm::mat4x4 WorldView = glm::lookAt(glm::vec3(core->gameObjects[0]->transform.translation.x, core->gameObjects[0]->transform.translation.y + .1, 2), glm::vec3(0), glm::vec3(0, 0, 1));  //glm::rotate(T2, -150.f, glm::vec3(0, 0, 1));
+	glm::mat4x4 WorldProj = glm::frustum(-sx, sx, -sy, sy, .1f, 10000.0f);
+
+	sp.Bind();
+
+
+	int loc = glGetUniformLocation(sp.program, "projectionMatrix");
+	glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(WorldProj));
+	loc = glGetUniformLocation(sp.program, "viewMatrix");
+	glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(WorldView));
+	loc = glGetUniformLocation(sp.program, "modelMatrix");
+	glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(glm::mat4(1.f)));
+
+	m->Draw(&sp);
+	sp.UnBind();
+
+	GLenum err;
+	while ((err = glGetError()) != GL_NO_ERROR)
+	{
+		std::cerr << "OpenGL error: " << err << " - " << gluErrorString(err) << std::endl;
+	}
 
     // Swap buffers
     glfwSwapBuffers(core->window);

@@ -1,12 +1,18 @@
 #pragma once
 #include "Precompiled.h"
 
-class Model {
-public:
-	Model(std::string filename);
+class Texture;
+class Mesh;
+class ShaderProgram;
 
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec3> indices;
-    std::vector<glm::vec3> normals;
-    std::vector<glm::vec3> uvs;
+class Model 
+{
+public:
+	Model(Texture * texture, Mesh * mesh) : texture(texture), mesh(mesh) { }
+
+	void Draw(ShaderProgram * shader);
+
+private:
+	Texture * texture;
+	Mesh * mesh;
 };

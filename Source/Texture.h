@@ -6,10 +6,9 @@ public:
     Texture(std::string fileName);
     ~Texture();
 
-    void Draw();
-
-    float scale;
+	GLuint GetTextureId() { return textureId; }
 
 private:
-    unsigned int textureId;
+	GLuint textureId;
+	int textureWidth, textureHeight;
 };

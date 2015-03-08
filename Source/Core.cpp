@@ -13,8 +13,6 @@ void Core::LoadTextures() {
         iss >> name >> path;
         textures[name] = new Texture(path);
     }
-
-    textures["station"]->scale = 500;
 }
 
 Core::Core() : windowTitle("Manticore Engine"), quit(false) 

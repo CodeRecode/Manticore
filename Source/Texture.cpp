@@ -1,10 +1,7 @@
 #include "Texture.h"
 
-Texture::Texture(std::string fileName) : scale(1) {
-    int textureWidth, textureHeight;
-
-    GLuint id;
-    glGenTextures(1, &id);
+Texture::Texture(std::string fileName) {
+	glGenTextures(1, &textureId);
 
     // Load and convert the image with DevIL
     ILuint imageID;	
@@ -17,8 +14,9 @@ Texture::Texture(std::string fileName) : scale(1) {
     textureWidth = ilGetInteger(IL_IMAGE_WIDTH);
     textureHeight = ilGetInteger(IL_IMAGE_HEIGHT);
 
+	// Bind the texture
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(GL_TEXTURE_2D, textureId);
     glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), textureWidth, textureHeight,
         0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
     ilDeleteImage(imageID);
@@ -30,32 +28,8 @@ Texture::Texture(std::string fileName) : scale(1) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glBindTexture(GL_TEXTURE_2D, NULL);
-
-    textureId = id;
 }
 
 Texture::~Texture() {
-    glDeleteTextures(1, &(GLuint)textureId);
-}
-
-void Texture::Draw() {
-    glBindTexture(GL_TEXTURE_2D, (GLuint)textureId);
-
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(0, 0); 
-    glVertex2f(-.5, -.5);
-
-    glTexCoord2f(0, scale); 
-    glVertex2f(-.5, .5);
-
-    glTexCoord2f(scale, scale); 
-    glVertex2f(.5, .5);
-
-    glTexCoord2f(scale, 0); 
-    glVertex2f(.5, -.5);
-
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, NULL);
+    glDeleteTextures(1, &textureId);
 }
