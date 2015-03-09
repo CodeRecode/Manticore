@@ -5,11 +5,16 @@
 
 class Core;
 
-class GraphicsManager : public IManager {
+class GraphicsManager : public IManager 
+{
 public:
-    GraphicsManager(Core * core);
-    void Update(double frameTime) override;
+	GraphicsManager(Core * core);
 
-	ShaderProgram sp;
+	void Init();
+	void Update(double frameTime) override;
+	void PrintGLError();
+
+private:
+	ShaderProgram basicShader;
 	Model * m;
 };

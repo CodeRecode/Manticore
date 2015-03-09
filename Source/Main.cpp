@@ -3,8 +3,11 @@
 
 int main(int argc, char **argv) {
     Core core;
-    while (!core.quit) {
+	core.StartGame();
+    while (!core.quit) 
+	{
         core.UpdateGame();
-    }
+	}
+	core.EndGame();
     return 0;
 }

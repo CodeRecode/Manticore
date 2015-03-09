@@ -10,10 +10,8 @@ enum class GameState {
     Paused
 };
 
-class Core {
-private:
-    std::vector<IManager *> managers;
-    const std::string windowTitle;
+class Core 
+{
 public:
     GLFWwindow *window;
     static const int INIT_WINDOW_WIDTH = 640,
@@ -25,6 +23,8 @@ public:
     std::map<std::string, Texture*> textures;
     GameObject *gameObjects[MAX_GAME_OBJECTS];
 
+	glm::vec3 cameraTranslation, cameraRotation;
+
     Core();
     ~Core();
 
@@ -35,4 +35,8 @@ public:
     void EndGame();
 
     void AddGameObject(GameObject *obj);
+
+private:
+	std::vector<IManager *> managers;
+	const std::string windowTitle;
 };

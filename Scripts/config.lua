@@ -4,7 +4,7 @@ g = LuaManager:SetPosition(g, 0, 0, -5)
 g = LuaManager:SetScale(g, 1.5, 1, 1)
 g = LuaManager:SetTexture(g, "ship")
 g = LuaManager:AddCollider(g)
-g = LuaManager:SetVelocity(g, 0, 0, -5)
+g = LuaManager:SetVelocity(g, 0, 0, 0)
 g = LuaManager:AddGameObject(g)
 
 g = LuaManager:CreateGameObject()

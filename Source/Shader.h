@@ -1,18 +1,18 @@
 #pragma once
 #include "Precompiled.h"
 
-class ShaderProgram 
+class ShaderProgram
 {
 public:
-	int program;
-
 	ShaderProgram(std::string fileName) : program(0), fileName(fileName) { }
 
 	void Initialize();
 	void Bind();
 	void UnBind();
+	int GetShaderProgram() { return program; }
 
 private:
+	int program;
 	std::string fileName;
 
 	void Create();

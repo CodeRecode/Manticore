@@ -1,10 +1,11 @@
 #pragma once
 #include "Precompiled.h"
 
-class Texture {
+class Texture
+{
 public:
-    Texture(std::string fileName);
-    ~Texture();
+	Texture(std::string fileName);
+	~Texture();
 
 	GLuint GetTextureId() { return textureId; }
 

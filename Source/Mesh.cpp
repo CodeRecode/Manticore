@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh() : vao(0), triangleCount(0) 
+Mesh::Mesh() : vao(0), triangleCount(0)
 {
 	LoadFromObj("./Models/cube.obj");
 }
@@ -114,7 +114,6 @@ void Mesh::GenerateVao()
 	glGenBuffers(1, &vboIndices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), &indices[0], GL_STATIC_DRAW);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glBindVertexArray(0);
 
