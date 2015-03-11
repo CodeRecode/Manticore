@@ -15,7 +15,7 @@ void Core::LoadTextures() {
 	}
 }
 
-Core::Core() : windowTitle("Manticore Engine"), quit(false), cameraTranslation(0, -1, -1), cameraRotation(0)
+Core::Core() : windowTitle("Manticore Engine"), quit(false), cameraTranslation(0, 0, -1), cameraRotation(0)
 {
 	// Initialize window
 	glfwInit();

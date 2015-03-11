@@ -8,7 +8,8 @@ Mesh::Mesh() : vao(0), triangleCount(0)
 void Mesh::LoadFromObj(std::string fileName)
 {
 	std::vector<std::tuple<int, int, int>> vertexData;
-	std::vector<glm::vec3> objPositions, objNormals;
+	std::vector<glm::vec4> objPositions;
+	std::vector<glm::vec3> objNormals;
 	std::vector<glm::vec2> objTexCoords;
 
 	std::ifstream modelFile(fileName);
@@ -28,7 +29,7 @@ void Mesh::LoadFromObj(std::string fileName)
 		if (type == "v")
 		{
 			inputss >> x >> y >> z;
-			objPositions.push_back(glm::vec3(x, y, z));
+			objPositions.push_back(glm::vec4(x, y, z, 1));
 		}
 		else if (type == "vn")
 		{
@@ -89,9 +90,9 @@ void Mesh::GenerateVao()
 	// Vertices
 	glGenBuffers(1, &vboVertices);
 	glBindBuffer(GL_ARRAY_BUFFER, vboVertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * positions.size(), &positions[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * positions.size(), &positions[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	// Normals

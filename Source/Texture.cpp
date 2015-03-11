@@ -10,7 +10,7 @@ Texture::Texture(std::string fileName)
 	ilBindImage(imageID);
 	ilLoadImage(fileName.c_str());
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-	iluFlipImage();
+	//iluFlipImage();
 
 	textureWidth = ilGetInteger(IL_IMAGE_WIDTH);
 	textureHeight = ilGetInteger(IL_IMAGE_HEIGHT);

@@ -44,9 +44,14 @@ void GraphicsManager::Update(double frameTime)
 	glm::mat4x4 WorldProj = glm::frustum(-sx, sx, -sy, sy, .1f, 10000.0f);
 
 	basicShader.Bind();
-	glUniformMatrix4fv(glGetUniformLocation(basicShader.GetShaderProgram(), "projectionMatrix"), 1, GL_FALSE, value_ptr(WorldProj));
-	glUniformMatrix4fv(glGetUniformLocation(basicShader.GetShaderProgram(), "viewMatrix"), 1, GL_FALSE, value_ptr(WorldView));
-	glUniformMatrix4fv(glGetUniformLocation(basicShader.GetShaderProgram(), "modelMatrix"), 1, GL_FALSE, value_ptr(glm::mat4(1.f)));
+	int program = basicShader.GetShaderProgram();
+	glUniformMatrix4fv(glGetUniformLocation(program, "projectionMatrix"), 1, GL_FALSE, value_ptr(WorldProj));
+	glUniformMatrix4fv(glGetUniformLocation(program, "viewMatrix"), 1, GL_FALSE, value_ptr(WorldView));
+	glUniformMatrix4fv(glGetUniformLocation(program, "viewMatrixInverse"), 1, GL_FALSE, value_ptr(glm::inverse(WorldView)));
+	glUniformMatrix4fv(glGetUniformLocation(program, "modelMatrix"), 1, GL_FALSE, value_ptr(glm::mat4(1.f)));
+
+	float lightPosition[3] = { 1, 1, 1 };
+	glUniform3fv(glGetUniformLocation(program, "lightPosition"), 1, lightPosition);
 
 	m->Draw(&basicShader);
 	basicShader.UnBind();
